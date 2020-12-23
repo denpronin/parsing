@@ -3,6 +3,7 @@ package com.example.parsehttp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     public static final String RESPONSE_TEXT = "textResponse";
     private RequestWorker requestWorker;
+    private ParseWorker parseWorker;
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         textResponse = (TextView) findViewById(R.id.request_text);
         textResponse.setMovementMethod(new ScrollingMovementMethod());
         requestWorker = new RequestWorker();
+        parseWorker = new ParseWorker();
     }
 
     public void onButtonClick(View view) {
@@ -48,6 +51,23 @@ public class MainActivity extends AppCompatActivity {
                         textResponse.setText(response);
                     }
                 });
+            }
+        });
+    }
+
+    public void onParseButtonClick(View view) {
+        parseWorker.doParsing(textResponse.getText().toString(), new ParseWorker.OnParseDoneListener() {
+            @Override
+            public void onParseDone(String parsedText) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MainActivity.this, ParsingActivity.class);
+                        intent.putExtra(ParsingActivity.EXTRA_MESSAGE, parsedText);
+                        startActivity(intent);
+                    }
+                });
+
             }
         });
     }
