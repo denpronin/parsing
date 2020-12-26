@@ -2,4 +2,5 @@
     <string name="app_name">ParseHttp</string>
     <string name="url_hint">Enter URL here</string>
     <string name="parse_it">Parse it</string>
+    <string name="go">Go</string>
 </resources>

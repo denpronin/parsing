@@ -1,6 +1,7 @@
 package com.example.parsehttp;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class RequestWorker {
                     callback.onRequestDone(response.toString());
                 } catch (IOException ex) {
                     ex.printStackTrace();
+                    Log.d(TAG, "!!! Error on append response !!!");
                 } finally {
                     try {
                         if (inputStream != null) {

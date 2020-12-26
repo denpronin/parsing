@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textResponse;
     private static final String TAG = "MainActivity";
     public static final String RESPONSE_TEXT = "textResponse";
-    private RequestWorker requestWorker;
+    //private RequestWorker requestWorker;
     private ParseWorker parseWorker;
 
     @Override
@@ -37,37 +37,20 @@ public class MainActivity extends AppCompatActivity {
         textURL = (EditText) findViewById(R.id.url_text);
         textResponse = (TextView) findViewById(R.id.request_text);
         textResponse.setMovementMethod(new ScrollingMovementMethod());
-        requestWorker = new RequestWorker();
+        //requestWorker = new RequestWorker();
         parseWorker = new ParseWorker();
     }
 
     public void onButtonClick(View view) {
-        requestWorker.doRequest(textURL.getText().toString(), new RequestWorker.OnRequestDoneListener() {
+        parseWorker.doParsing(textURL.getText().toString(), new ParseWorker.OnParseDoneListener() {
             @Override
-            public void onRequestDone(String response) {
+            public void  onParseDone(String parsedText) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        textResponse.setText(response);
+                        textResponse.setText(parsedText);
                     }
                 });
-            }
-        });
-    }
-
-    public void onParseButtonClick(View view) {
-        parseWorker.doParsing(textResponse.getText().toString(), new ParseWorker.OnParseDoneListener() {
-            @Override
-            public void onParseDone(String parsedText) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(MainActivity.this, ParsingActivity.class);
-                        intent.putExtra(ParsingActivity.EXTRA_MESSAGE, parsedText);
-                        startActivity(intent);
-                    }
-                });
-
             }
         });
     }
