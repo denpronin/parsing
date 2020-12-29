@@ -42,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onButtonClick(View view) {
-        parseWorker.doParsing(textURL.getText().toString(), new ParseWorker.OnParseDoneListener() {
+        Intent intent = new Intent(this, ParsingActivity.class);
+        startActivity(intent);
+        /*parseWorker.doParsing(textURL.getText().toString(), new ParseWorker.OnParseDoneListener() {
             @Override
             public void  onParseDone(String parsedText) {
                 runOnUiThread(new Runnable() {
@@ -52,6 +54,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        });
+        });*/
     }
 }
