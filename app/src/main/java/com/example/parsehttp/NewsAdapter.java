@@ -17,7 +17,7 @@ import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
-    public List<News> newsList = new ArrayList<>();
+    private List<News> newsList = new ArrayList<>();
 
     class NewsViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageSrc;
