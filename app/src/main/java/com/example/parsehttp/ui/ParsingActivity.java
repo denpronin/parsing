@@ -1,21 +1,26 @@
-package com.example.parsehttp;
+package com.example.parsehttp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.parsehttp.R;
+import com.squareup.picasso.Picasso;
+
 public class ParsingActivity extends AppCompatActivity {
-public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parsing);
-        Intent intent = getIntent();
-        TextView parseText = (TextView) findViewById(R.id.parse_text);
-        parseText.setMovementMethod(new ScrollingMovementMethod());
-        parseText.setText(intent.getStringExtra(EXTRA_MESSAGE));
     }
+
+
 }
