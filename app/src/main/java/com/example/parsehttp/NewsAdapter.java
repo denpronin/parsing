@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
@@ -59,5 +60,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     @Override
     public int getItemCount() {
         return newsList.size();
+    }
+
+    public void setItems (Collection<News> news) {
+        newsList.addAll(news);
+        notifyDataSetChanged();
+    }
+
+    public void clearItems() {
+        newsList.clear();
+        notifyDataSetChanged();
     }
 }

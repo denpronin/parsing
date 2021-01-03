@@ -8,10 +8,15 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParseWorker {
     private static final String TAG = "textURL.getText().toString()";
-    private StringBuilder parsedText;
+    private static final String USER_AGENT = "Chrome/Opera";
+    private static final String REFERRER = "http://www.google.com";
+    private static final int TIMEOUT = 60000;
+    private List<News> newsList;
 
     public void doParsing(String response, OnParseDoneListener callback) {
         Thread parsing = new Thread(new Runnable() {
@@ -19,24 +24,23 @@ public class ParseWorker {
             public void run() {
                 Document doc;
                 try {
-                doc = Jsoup.connect(response).userAgent("Mozila")
-                        .referrer("http://www.google.com")
-                        .timeout(60000)
+                doc = Jsoup.connect(response).userAgent(USER_AGENT)
+                        .referrer(REFERRER)
+                        .timeout(TIMEOUT)
                         .get();
-                    parsedText = new StringBuilder();
-                    parsedText.append("Title: ").append(doc.title()).append("\n");
                     Elements news = doc.select("ul.b-lists-category");
                     Elements newsItems = news.select("li.lists_category__li");
-
+                    newsList = new ArrayList<>();
                     for (Element newsItem : newsItems) {
-                        parsedText.append("Title: ").append(newsItem.select("a").attr("title")).append("\n");
-                        parsedText.append("Href: ").append(newsItem.select("a").attr("href")).append("\n");
-                        parsedText.append("Image: ").append(newsItem.select("img").attr("src")).append("\n");
-                        parsedText.append("Date: ").append(newsItem.select("p[class=category__date]").text()).append("\n");
-                        parsedText.append("Note: ").append(newsItem.select("p").get(1).text()).append("\n");
-                        parsedText.append("\n").append("\n");
+                        newsList.add(new News(
+                        newsItem.select("a").attr("title"),
+                        newsItem.select("a").attr("href"),
+                        newsItem.select("img").attr("src"),
+                        newsItem.select("p").get(1).text(),
+                        newsItem.select("p[class=category__date]").text()
+                        ));
                     }
-                    callback.onParseDone(parsedText.toString());
+                    callback.onParseDone(newsList);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     Log.d(TAG, "!!! Error on append response !!!");
@@ -47,6 +51,6 @@ public class ParseWorker {
     }
 
     public interface OnParseDoneListener {
-        void onParseDone(String parsedText);
+        void onParseDone(List<News> newsList);
     }
 }

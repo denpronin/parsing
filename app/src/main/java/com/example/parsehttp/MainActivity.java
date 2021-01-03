@@ -2,6 +2,8 @@ package com.example.parsehttp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,50 +12,50 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
-    private EditText textURL;
-    private TextView textResponse;
     private static final String TAG = "MainActivity";
     public static final String RESPONSE_TEXT = "textResponse";
-    //private RequestWorker requestWorker;
+    private static final String URL_FOR_PARSING = "https://afisha.tut.by/news/";
     private ParseWorker parseWorker;
+    private NewsAdapter newsAdapter;
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(RESPONSE_TEXT, textResponse.getText().toString());
+        //outState.putString(RESPONSE_TEXT, textResponse.getText().toString());
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        textResponse.setText(savedInstanceState.getString(RESPONSE_TEXT, "000"));
+        //textResponse.setText(savedInstanceState.getString(RESPONSE_TEXT, "000"));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textURL = (EditText) findViewById(R.id.url_text);
-        textResponse = (TextView) findViewById(R.id.request_text);
-        textResponse.setMovementMethod(new ScrollingMovementMethod());
-        //requestWorker = new RequestWorker();
         parseWorker = new ParseWorker();
+        initRecyclerView();
     }
 
-    public void onButtonClick(View view) {
-        Intent intent = new Intent(this, ParsingActivity.class);
-        startActivity(intent);
-        /*parseWorker.doParsing(textURL.getText().toString(), new ParseWorker.OnParseDoneListener() {
+    private void initRecyclerView() {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        newsAdapter = new NewsAdapter();
+        parseWorker.doParsing(URL_FOR_PARSING, new ParseWorker.OnParseDoneListener() {
             @Override
-            public void  onParseDone(String parsedText) {
+            public void  onParseDone(List<News> newsList) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        textResponse.setText(parsedText);
+                        newsAdapter.setItems(newsList);
                     }
                 });
             }
-        });*/
+        });
+        recyclerView.setAdapter(newsAdapter);
     }
 }
