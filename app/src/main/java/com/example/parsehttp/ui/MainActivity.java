@@ -1,16 +1,15 @@
-package com.example.parsehttp;
+package com.example.parsehttp.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
+
+import com.example.parsehttp.R;
+import com.example.parsehttp.network.ParseWorker;
+import com.example.parsehttp.model.News;
 
 import java.util.List;
 
@@ -48,12 +47,8 @@ public class MainActivity extends AppCompatActivity {
         parseWorker.doParsing(URL_FOR_PARSING, new ParseWorker.OnParseDoneListener() {
             @Override
             public void  onParseDone(List<News> newsList) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        newsAdapter.setItems(newsList);
-                    }
-                });
+                runOnUiThread(() -> {newsAdapter.setItems(newsList);}
+                );
             }
         });
         recyclerView.setAdapter(newsAdapter);

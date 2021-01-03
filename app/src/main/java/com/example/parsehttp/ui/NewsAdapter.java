@@ -1,4 +1,4 @@
-package com.example.parsehttp;
+package com.example.parsehttp.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.parsehttp.R;
+import com.example.parsehttp.model.News;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -48,7 +50,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     @NonNull
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_item_news, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
         return new NewsViewHolder(view);
     }
 

@@ -11,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ParseHttp">
-        <activity android:name=".ParsingActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.ParsingActivity"></activity>
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

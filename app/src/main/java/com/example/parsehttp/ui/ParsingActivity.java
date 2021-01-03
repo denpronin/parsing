@@ -1,4 +1,4 @@
-package com.example.parsehttp;
+package com.example.parsehttp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +11,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.parsehttp.R;
 import com.squareup.picasso.Picasso;
 
 public class ParsingActivity extends AppCompatActivity {
