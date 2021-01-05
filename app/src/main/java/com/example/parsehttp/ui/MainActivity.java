@@ -1,16 +1,14 @@
 package com.example.parsehttp.ui;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-
 import com.example.parsehttp.R;
 import com.example.parsehttp.network.ParseWorker;
 import com.example.parsehttp.model.News;
-
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,18 +19,6 @@ public class MainActivity extends AppCompatActivity {
     private NewsAdapter newsAdapter;
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //outState.putString(RESPONSE_TEXT, textResponse.getText().toString());
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        //textResponse.setText(savedInstanceState.getString(RESPONSE_TEXT, "000"));
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -40,17 +26,31 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void initRecyclerView() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        newsAdapter = new NewsAdapter();
-        parseWorker.doParsing(URL_FOR_PARSING, new ParseWorker.OnParseDoneListener() {
+        NewsAdapter.OnNewsClickListener onNewsClick = new NewsAdapter.OnNewsClickListener() {
             @Override
-            public void  onParseDone(List<News> newsList) {
+            public void onNewsClick(News news) {
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(MainActivity.this, NewsActivity.class);
+                    intent.putExtra(NewsActivity.MESSAGE_TITLE, news.getTitle());
+                    intent.putExtra(NewsActivity.MESSAGE_IMG_SRC, news.getImageSrc());
+                    intent.putExtra(NewsActivity.MESSAGE_HREF, news.getHref());
+                    startActivity(intent);}
+                );
+            }
+        };
+        newsAdapter = new NewsAdapter(onNewsClick);
+        parseWorker.doParsingNewsList(URL_FOR_PARSING, new ParseWorker.OnParseNewsListDoneListener() {
+            @Override
+            public void  OnParseNewsListDone(List<News> newsList) {
                 runOnUiThread(() -> {newsAdapter.setItems(newsList);}
                 );
             }
         });
+
         recyclerView.setAdapter(newsAdapter);
     }
 }

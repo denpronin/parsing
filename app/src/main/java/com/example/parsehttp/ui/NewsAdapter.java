@@ -19,13 +19,22 @@ import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
-    private List<News> newsList = new ArrayList<>();
+    private final List<News> newsList = new ArrayList<>();
+    private final OnNewsClickListener onNewsClickListener;
+
+    public interface OnNewsClickListener {
+        void onNewsClick(News news);
+    }
+
+    public NewsAdapter(OnNewsClickListener onNewsClickListener) {
+        this.onNewsClickListener = onNewsClickListener;
+    }
 
     class NewsViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imageSrc;
-        private TextView title;
-        private TextView date;
-        private TextView note;
+        private final ImageView imageSrc;
+        private final TextView title;
+        private final TextView date;
+        private final TextView note;
 
         public NewsViewHolder(View view) {
             super(view);
@@ -33,6 +42,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             title = (TextView) view.findViewById(R.id.title);
             date = (TextView) view.findViewById(R.id.date);
             note = (TextView) view.findViewById(R.id.note);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    News news = newsList.get(getLayoutPosition());
+                    onNewsClickListener.onNewsClick(news);
+                }
+            });
         }
 
         public void bind (News news) {

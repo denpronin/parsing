@@ -4,12 +4,12 @@ package com.example.parsehttp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class News implements Parcelable {
-    private String title;
-    private String href;
-    private String imageSrc;
-    private String note;
-    private String date;
+public class News {
+    private final String title;
+    private final String href;
+    private final String imageSrc;
+    private final String note;
+    private final String date;
 
     public News(String argTitle, String argHref, String argImageSrc, String argNote, String argDate) {
         title = argTitle;
@@ -17,16 +17,6 @@ public class News implements Parcelable {
         imageSrc = argImageSrc;
         note = argNote;
         date = argDate;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public String getHref() {

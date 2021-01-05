@@ -20,8 +20,9 @@ public class ParseWorker {
     private static final String REFERRER = "http://www.google.com";
     private static final int TIMEOUT = 60000;
     private List<News> newsList;
+    private StringBuilder newsText;
 
-    public void doParsing(String response, OnParseDoneListener callback) {
+    public void doParsingNewsList(String response, OnParseNewsListDoneListener callback) {
         Thread parsing = new Thread(() -> {
             try {
                 Document doc = Jsoup.connect(response).userAgent(USER_AGENT)
@@ -40,7 +41,7 @@ public class ParseWorker {
                             newsItem.select("p[class=category__date]").text()
                     ));
                 }
-                callback.onParseDone(newsList);
+                callback.OnParseNewsListDone(newsList);
             } catch (IOException ex) {
                 ex.printStackTrace();
                 Log.d(TAG, "!!! Error on append response !!!");
@@ -49,7 +50,37 @@ public class ParseWorker {
         parsing.start();
     }
 
-    public interface OnParseDoneListener {
-        void onParseDone(List<News> newsList);
+    public interface OnParseNewsListDoneListener {
+        void OnParseNewsListDone(List<News> newsList);
+    }
+
+    public void doParsingNews(String response, OnParseNewsDoneListener callback) {
+        Thread parsing = new Thread(() -> {
+            try {
+                Document doc = Jsoup.connect(response).userAgent(USER_AGENT)
+                        .referrer(REFERRER)
+                        .timeout(TIMEOUT)
+                        .get();
+                Elements news = doc.select("[class=b-article]");
+                Elements p = news.select("p");
+                int pSize = p.size();
+                newsText = new StringBuilder();
+                if (pSize != 0) {
+                    for (int i = 0; i < pSize; i++) {
+                        newsText.append(p.get(i).text()).append("\n");
+                        newsText.append("\n");
+                    }
+                }
+                callback.OnParseNewsDone(newsText.toString());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                Log.d(TAG, "!!! Error on append response !!!");
+            }
+        });
+        parsing.start();
+    }
+
+    public interface OnParseNewsDoneListener {
+        void OnParseNewsDone(String newsText);
     }
 }
