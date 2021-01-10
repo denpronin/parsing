@@ -1,34 +1,41 @@
 package com.example.parsehttp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
+
 import com.example.parsehttp.R;
 import com.example.parsehttp.network.ParseWorker;
 import com.example.parsehttp.model.News;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
-    public static final String RESPONSE_TEXT = "textResponse";
     private static final String URL_FOR_PARSING = "https://afisha.tut.by/news/";
     private ParseWorker parseWorker;
     private NewsAdapter newsAdapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
         parseWorker = new ParseWorker();
         initRecyclerView();
+        //Не знаю почему, но так прогрессбар работает
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void initRecyclerView() {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         NewsAdapter.OnNewsClickListener onNewsClick = new NewsAdapter.OnNewsClickListener() {
             @Override

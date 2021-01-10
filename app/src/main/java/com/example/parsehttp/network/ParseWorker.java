@@ -1,5 +1,6 @@
 package com.example.parsehttp.network;
 
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.example.parsehttp.model.News;
@@ -18,7 +19,7 @@ public class ParseWorker {
     private static final String TAG = "ParseWorker";
     private static final String USER_AGENT = HttpConnection.DEFAULT_UA;
     private static final String REFERRER = "http://www.google.com";
-    private static final int TIMEOUT = 60000;
+    private static final int TIMEOUT = (int) DateUtils.MINUTE_IN_MILLIS;
     private List<News> newsList;
     private StringBuilder newsText;
 
